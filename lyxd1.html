@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>月光海露营小店 - 一站式露营生活服务</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            font-size: 14px; /* 减小基础字体大小 */
+        }
+        
+        /* 页面切换效果 */
+        .page {
+            display: none;
+        }
+        
+        .page.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* 顶部联系条 */
+        .top-contact-bar {
+            background: linear-gradient(135deg, #4a7c59, #3a6347);
+            color: white;
+            padding: 10px 16px; /* 减小内边距 */
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            font-size: 0.95rem; /* 减小字体 */
+        }
+        
+        .contact-info {
+            display: flex;
+            align-items: center;
+            gap: 10px; /* 减小间距 */
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 5px; /* 减小间距 */
+            text-decoration: none;
+            color: white;
+            padding: 5px 10px; /* 减小内边距 */
+            border-radius: 20px;
+            background-color: rgba(255,255,255,0.15);
+            transition: all 0.3s ease;
+            font-size: 0.9rem; /* 减小字体 */
+        }
+        
+        .contact-item:hover {
+            background-color: rgba(255,255,255,0.25);
+            transform: translateY(-2px);
+        }
+        
+        .contact-icon {
+            font-size: 1.0rem; /* 减小图标 */
+        }
+        
+        .home-button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.3rem; /* 减小主页按钮 */
+            cursor: pointer;
+            padding: 6px; /* 减小内边距 */
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+        
+        .home-button:hover {
+            background-color: rgba(255,255,255,0.2);
+        }
+        
+        /* 头部样式 */
+        header {
+            padding: 15px 16px 8px; /* 减小内边距 */
+            text-align: center;
+            background: white;
+        }
+        
+        .logo {
+            font-size: 1.8rem; /* 减小logo字体 */
+            font-weight: bold;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px; /* 减小间距 */
+            margin-bottom: 8px; /* 减小间距 */
+        }
+        
+        .logo-icon {
+            font-size: 35px; /* 减小logo图标 */
+            background: linear-gradient(135deg, #4a7c59, #3a6347);
+            color: white;
+            width: 55px; /* 减小尺寸 */
+            height: 55px; /* 减小尺寸 */
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .tagline {
+            color: #5a5a5a;
+            font-size: 0.95rem; /* 减小标语字体 */
+            max-width: 300px;
+            margin: 0 auto;
+        }
+        
+        /* 导航样式 */
+        nav {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px; /* 减小间距 */
+            padding: 12px 16px; /* 减小内边距 */
+            background-color: white;
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            color: #333;
+            text-decoration: none;
+            padding: 10px 4px; /* 减小内边距 */
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            cursor: pointer;
+        }
+        
+        .nav-item:hover {
+            background-color: #e8f4ea;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .nav-icon {
+            font-size: 1.8rem; /* 减小导航图标 */
+            margin-bottom: 6px; /* 减小间距 */
+            color: #4a7c59;
+        }
+        
+        .nav-title {
+            font-size: 0.95rem; /* 减小导航标题 */
+            font-weight: 500;
+        }
+        
+        /* 主内容区域 */
+        .main-content {
+            flex-grow: 1;
+            padding: 0 16px 15px; /* 减小内边距 */
+            position: relative;
+        }
+        
+        section {
+            margin-bottom: 15px; /* 减小间距 */
+            background-color: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        
+        .section-header {
+            padding: 12px 16px; /* 减小内边距 */
+            font-size: 1.1rem; /* 减小标题 */
+            font-weight: 600;
+            color: #4a7c59;
+            border-bottom: 2px solid #e8f4ea;
+        }
+        
+        /* 商品网格 */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* 减小尺寸 */
+            gap: 10px; /* 减小间距 */
+            padding: 12px; /* 减小内边距 */
+        }
+        
+        .product-card {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+        
+        .product-image {
+            width: 100%;
+            height: 120px; /* 减小高度 */
+            background-color: #f5f7f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem; /* 减小图标 */
+            color: #aaa;
+        }
+        
+        .product-info {
+            padding: 10px; /* 减小内边距 */
+            background-color: white;
+        }
+        
+        .product-title {
+            font-size: 0.95rem; /* 减小商品标题 */
+            margin-bottom: 5px; /* 减小间距 */
+            font-weight: 500;
+            height: 36px; /* 减小高度 */
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+        
+        .product-price {
+            color: #e67a00;
+            font-weight: bold;
+            font-size: 1.05rem; /* 减小价格字体 */
+        }
+        
+        .original-price {
+            text-decoration: line-through;
+            color: #999;
+            font-size: 0.85rem; /* 减小字体 */
+            margin-right: 5px;
+        }
+        
+        .product-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px; /* 减小间距 */
+        }
+        
+        .add-to-cart {
+            background-color: #d9b779;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 5px 10px; /* 减小内边距 */
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            flex-grow: 1;
+            text-align: center;
+            font-size: 0.95rem; /* 减小按钮字体 */
+        }
+        
+        .add-to-cart:hover {
+            background-color: #c8a65d;
+        }
+        
+        /* 服务网格 */
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px; /* 减小间距 */
+            padding: 12px; /* 减小内边距 */
+        }
+        
+        .service-card {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            background-color: white;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+        
+        .service-content {
+            display: flex;
+            align-items: center;
+            padding: 10px; /* 减小内边距 */
+        }
+        
+        .service-icon {
+            width: 45px; /* 减小尺寸 */
+            height: 45px; /* 减小尺寸 */
+            background-color: #e8f4ea;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem; /* 减小图标 */
+            color: #4a7c59;
+            margin-right: 10px; /* 减小间距 */
+            flex-shrink: 0;
+        }
+        
+        .service-text {
+            flex-grow: 1;
+        }
+        
+        .service-title {
+            font-weight: 600;
+            margin-bottom: 3px; /* 减小间距 */
+            font-size: 0.95rem; /* 减小服务标题 */
+        }
+        
+        .service-desc {
+            font-size: 0.85rem; /* 减小描述字体 */
+            color: #666;
+            line-height: 1.4;
+        }
+        
+        /* 菜单页面样式 */
+        .menu-page {
+            padding: 12px; /* 减小内边距 */
+        }
+        
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); /* 减小尺寸 */
+            gap: 12px; /* 减小间距 */
+        }
+        
+        .menu-item {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .menu-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+        
+        .menu-image {
+            width: 100%;
+            height: 100px; /* 减小高度 */
+            background-color: #f5f7f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.0rem; /* 减小图标 */
+            color: #aaa;
+        }
+        
+        .menu-info {
+            padding: 10px; /* 减小内边距 */
+        }
+        
+        .menu-title {
+            font-size: 0.95rem; /* 减小菜单标题 */
+            margin-bottom: 5px; /* 减小间距 */
+            font-weight: 500;
+        }
+        
+        .menu-price {
+            color: #e67a00;
+            font-weight: bold;
+            font-size: 1.0rem; /* 减小价格字体 */
+        }
+        
+        /* 留言板样式 */
+        .message-board {
+            padding: 12px; /* 减小内边距 */
+        }
+        
+        .message-form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px; /* 减小间距 */
+            margin-bottom: 15px; /* 减小间距 */
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-label {
+            margin-bottom: 4px; /* 减小间距 */
+            font-weight: 500;
+            color: #4a7c59;
+            font-size: 0.95rem; /* 减小标签字体 */
+        }
+        
+        .form-input {
+            padding: 10px; /* 减小内边距 */
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 0.95rem; /* 减小输入字体 */
+            transition: border-color 0.3s;
+        }
+        
+        .form-input:focus {
+            border-color: #4a7c59;
+            outline: none;
+        }
+        
+        textarea.form-input {
+            min-height: 100px; /* 减小高度 */
+            resize: vertical;
+        }
+        
+        .submit-btn {
+            background-color: #4a7c59;
+            color: white;
+            border: none;
+            padding: 10px 18px; /* 减小内边距 */
+            border-radius: 8px;
+            font-size: 1.0rem; /* 减小按钮字体 */
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .submit-btn:hover {
+            background-color: #3a6347;
+        }
+        
+        .message-list {
+            max-height: 350px; /* 减小高度 */
+            overflow-y: auto;
+            border-radius: 8px;
+            padding: 8px; /* 减小内边距 */
+            background-color: #f8f9fa;
+        }
+        
+        .message-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 12px; /* 减小内边距 */
+            margin-bottom: 12px; /* 减小间距 */
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px; /* 减小间距 */
+            border-bottom: 1px solid #eee;
+            padding-bottom: 6px; /* 减小内边距 */
+        }
+        
+        .message-author {
+            font-weight: 600;
+            color: #3a6347;
+            font-size: 1.0rem; /* 减小作者字体 */
+        }
+        
+        .message-date {
+            font-size: 0.85rem; /* 减小字体 */
+            color: #888;
+        }
+        
+        .message-content {
+            line-height: 1.5;
+            font-size: 0.95rem; /* 减小内容字体 */
+        }
+        
+        /* 底部联系栏 */
+        .bottom-contact-bar {
+            background: linear-gradient(135deg, #3a6347, #2a4d36);
+            color: white;
+            padding: 15px 16px; /* 减小内边距 */
+            text-align: center;
+            margin-top: auto;
+        }
+        
+        .contact-title {
+            font-size: 1.1rem; /* 减小标题字体 */
+            font-weight: 600;
+            margin-bottom: 10px; /* 减小间距 */
+        }
+        
+        .contact-details {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px; /* 减小间距 */
+            margin-bottom: 12px; /* 减小间距 */
+            font-size: 0.95rem; /* 减小详情字体 */
+        }
+        
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .detail-icon {
+            font-size: 1.1rem; /* 减小图标 */
+            margin-bottom: 5px; /* 减小间距 */
+            color: #d9b779;
+        }
+        
+        .detail-text {
+            font-size: 0.9rem; /* 减小字体 */
+        }
+        
+        .hours {
+            font-size: 0.85rem; /* 减小营业时间字体 */
+            opacity: 0.9;
+        }
+        
+        .copyright {
+            margin-top: 12px; /* 减小间距 */
+            font-size: 0.8rem; /* 减小字体 */
+            opacity: 0.7;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 480px) {
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .service-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            nav {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (min-width: 768px) {
+            .product-grid {
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* 减小尺寸 */
+            }
+            
+            nav {
+                grid-template-columns: repeat(6, 1fr);
+                gap: 12px; /* 减小间距 */
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部联系条 -->
+    <div class="top-contact-bar">
+        <button class="home-button" id="home-button">
+            <i class="fas fa-home"></i>
+        </button>
+        <div class="contact-info">
+            <a href="tel:13886871234" class="contact-item">
+                <i class="fas fa-phone-alt contact-icon"></i>
+                <span>138-8687-1234</span>
+            </a>
+            <a href="#" id="wechat-btn" class="contact-item">
+                <i class="fab fa-weixin contact-icon"></i>
+                <span>添加微信</span>
+            </a>
+        </div>
+        <div class="contact-name">联系人：张生</div>
+    </div>
+    
+    <!-- 主页 -->
+    <div id="main-page" class="page active">
+        <header>
+            <div class="logo">
+                <div class="logo-icon">🏕️</div>
+                <h1>月光海露营小店</h1>
+            </div>
+            <p class="tagline">一站式露营生活服务专家</p>
+        </header>
+        
+        <!-- 服务导航 -->
+        <nav>
+            <a class="nav-item" data-page="food">
+                <div class="nav-icon">🍔</div>
+                <div class="nav-title">订餐</div>
+            </a>
+            <a class="nav-item" data-page="room">
+                <div class="nav-icon">🏠</div>
+                <div class="nav-title">订房</div>
+            </a>
+            <a class="nav-item" data-page="fishing">
+                <div class="nav-icon">🎣</div>
+                <div class="nav-title">打鱼窝</div>
+            </a>
+            <a class="nav-item" data-page="ticket">
+                <div class="nav-icon">🎫</div>
+                <div class="nav-title">门票</div>
+            </a>
+            <a class="nav-item" data-page="run">
+                <div class="nav-icon">🛒</div>
+                <div class="nav-title">跑腿</div>
+            </a>
+            <a class="nav-item" data-page="messages">
+                <div class="nav-icon">📝</div>
+                <div class="nav-title">留言板</div>
+            </a>
+        </nav>
+        
+        <!-- 主内容区域 -->
+        <div class="main-content">
+            <!-- 热门商品区域 -->
+            <section>
+                <div class="section-header">🔥 露营必备推荐</div>
+                <div class="product-grid">
+                    <div class="product-card">
+                        <div class="product-image">🍖</div>
+                        <div class="product-info">
+                            <div class="product-title">BBQ烤肉套餐(2-3人)</div>
+                            <div class="product-price">¥128</div>
+                            <div class="product-actions">
+                                <button class="add-to-cart">预订</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-image">🍱</div>
+                        <div class="product-info">
+                            <div class="product-title">野营便当套餐</div>
+                            <div class="product-price">¥45</div>
+                            <div class="product-actions">
+                                <button class="add-to-cart">预订</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-image">🍲</div>
+                        <div class="product-info">
+                            <div class="product-title">露营火锅套餐</div>
+                            <div class="product-price">¥98</div>
+                            <div class="product-actions">
+                                <button class="add-to-cart">预订</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-image">🍉</div>
+                        <div class="product-info">
+                            <div class="product-title">时令水果拼盘</div>
+                            <div class="product-price">¥28</div>
+                            <div class="product-actions">
+                                <button class="add-to-cart">预订</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 限时优惠 -->
+            <section>
+                <div class="section-header">⏰ 限时特惠</div>
+                <div class="product-grid">
+                    <div class="product-card">
+                        <div class="product-image">🍗</div>
+                        <div class="product-info">
+                            <div class="product-title">秘制烤鸡套餐</div>
+                            <div class="product-price">
+                                <span class="original-price">¥68</span> 
+                                ¥48
+                            </div>
+                            <div class="product-actions">
+                                <button class="add-to-cart">抢购</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-image">🥩</div>
+                        <div class="product-info">
+                            <div class="product-title">澳洲牛排套餐</div>
+                            <div class="product-price">
+                                <span class="original-price">¥88</span> 
+                                ¥68
+                            </div>
+                            <div class="product-actions">
+                                <button class="add-to-cart">抢购</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 服务区域 -->
+            <section>
+                <div class="section-header">🚀 特色服务</div>
+                <div class="service-grid">
+                    <div class="service-card">
+                        <div class="service-content">
+                            <div class="service-icon">🏕️</div>
+                            <div class="service-text">
+                                <div class="service-title">露营帐篷预订</div>
+                                <div class="service-desc">海景帐篷/森林木屋/家庭套房</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-content">
+                            <div class="service-icon">🎣</div>
+                            <div class="service-text">
+                                <div class="service-title">专业打鱼窝服务</div>
+                                <div class="service-desc">装备租赁/钓鱼指导/最佳点位</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-content">
+                            <div class="service-icon">🚗</div>
+                            <div class="service-text">
+                                <div class="service-title">景点门票代订</div>
+                                <div class="service-desc">月光海景区/森林公园/水上乐园</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-content">
+                            <div class="service-icon">🛒</div>
+                            <div class="service-text">
+                                <div class="service-title">露营用品跑腿</div>
+                                <div class="service-desc">忘带装备？我们帮您采购送达</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    
+    <!-- 订餐页面 -->
+    <div id="food-page" class="page">
+        <div class="section-header">
+            <div class="service-icon">🍔</div>
+            订餐菜单
+        </div>
+        
+        <div class="menu-page">
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <div class="menu-image">🍖</div>
+                    <div class="menu-info">
+                        <div class="menu-title">BBQ烤肉套餐(2-3人)</div>
+                        <div class="menu-price">¥128</div>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-image">🍱</div>
+                    <div class="menu-info">
+                        <div class="menu-title">野营便当套餐</div>
+                        <div class="menu-price">¥45</div>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-image">🍲</div>
+                    <div class="menu-info">
+                        <div class="menu-title">露营火锅套餐</div>
+                        <div class="menu-price">¥98</div>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-image">🍉</div>
+                    <div class="menu-info">
+                        <div class="menu-title">时令水果拼盘</div>
+                        <div class="menu-price">¥28</div>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-image">🍗</div>
+                    <div class="menu-info">
+                        <div class="menu-title">秘制烤鸡套餐</div>
+                        <div class="menu-price">¥48</div>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-image">🥩</div>
+                    <div class="menu-info">
+                        <div class="menu-title">澳洲牛排套餐</div>
+                        <div class="menu-price">¥68</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 订房页面 -->
+    <div id="room-page" class="page">
+        <div class="section-header">
+            <div class="service-icon">🏠</div>
+            住宿预订
+        </div>
+        
+        <div class="menu-page">
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <div class="menu-image">🏕️</div>
+                    <div class="menu-info">
+                        <div class="menu-title">海景帐篷(双人)</div>
+                        <div class="menu-price">¥198/晚</div>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-image">🏠</div>
+                    <div class="menu-info">
+                        <div class="menu-title">森林木屋(4人)</div>
+                        <div class="menu-price">¥358/晚</div>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-image">🏡</div>
+                    <div class="menu-info">
+                        <div class="menu-title">家庭套房(6人)</div>
+                        <div class="menu-price">¥498/晚</div>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-image">⛺</div>
+                    <div class="menu-info">
+                        <div class="menu-title">星空帐篷(双人)</div>
+                        <div class="menu-price">¥228/晚</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 打鱼窝页面 -->
+    <div id="fishing-page" class="page">
+        <div class="section-header">
+            <div class="service-icon">🎣</div>
+            打鱼窝服务
+        </div>
+        
+        <div class="menu-page">
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <div class="menu-image">🎣</div>
+                    <div class="menu-info">
+                        <div class="menu-title">专业钓鱼指导(2小时)</div>
+                        <div class="menu-price">¥120</div>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-image">🎣</div>
+                    <div class="menu-info">
+                        <div class="menu-title">渔具租赁(全天)</div>
+                        <div class="menu-price">¥80</div>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-image">🎣</div>
+                    <div class="menu-info">
+                        <div class="menu-title">最佳钓鱼点位</div>
+                        <div class="menu-price">¥50</div>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-image">🎣</div>
+                    <div class="menu-info">
+                        <div class="menu-title">鱼饵套餐</div>
+                        <div class="menu-price">¥30</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 门票页面 -->
+    <div id="ticket-page" class="page">
+        <div class="section-header">
+            <div class="service-icon">🎫</div>
+            景点门票
+        </div>
+        
+        <div class="menu-page">
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <div class="menu-image">🌊</div>
+                    <div class="menu-info">
+                        <div class="menu-title">月光海景区门票</div>
+                        <div class="menu-price">¥68</div>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-image">🌲</div>
+                    <div class="menu-info">
+                        <div class="menu-title">森林公园门票</div>
+                        <div class="menu-price">¥45</div>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-image">🎢</div>
+                    <div class="menu-info">
+                        <div class="menu-title">水上乐园门票</div>
+                        <div class="menu-price">¥98</div>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-image">🏞️</div>
+                    <div class="menu-info">
+                        <div class="menu-title">观星台门票</div>
+                        <div class="menu-price">¥38</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 跑腿页面 -->
+    <div id="run-page" class="page">
+        <div class="section-header">
+            <div class="service-icon">🛒</div>
+            跑腿服务
+        </div>
+        
+        <div class="menu-page">
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <div class="menu-image">🛍️</div>
+                    <div class="menu-info">
+                        <div class="menu-title">食品采购</div>
+                        <div class="menu-price">¥30起</div>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-image">⛺</div>
+                    <div class="menu-info">
+                        <div class="menu-title">帐篷租赁</div>
+                        <div class="menu-price">¥80/天</div>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-image">🔥</div>
+                    <div class="menu-info">
+                        <div class="menu-title">烧烤架租赁</div>
+                        <div class="menu-price">¥50/天</div>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-image">🧊</div>
+                    <div class="menu-info">
+                        <div class="menu-title">冰块配送</div>
+                        <div class="menu-price">¥20/箱</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 留言板页面 -->
+    <div id="messages-page" class="page">
+        <div class="section-header">
+            <div class="service-icon">📝</div>
+            留言板
+        </div>
+        
+        <div class="message-board">
+            <form id="message-form" class="message-form">
+                <div class="form-group">
+                    <label class="form-label" for="message-name">您的称呼</label>
+                    <input type="text" id="message-name" class="form-input" required placeholder="请输入您的名字">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="message-content">留言内容</label>
+                    <textarea id="message-content" class="form-input" required placeholder="请留下您的宝贵意见或建议"></textarea>
+                </div>
+                
+                <button type="submit" class="submit-btn">发布留言</button>
+            </form>
+            
+            <div id="message-list" class="message-list">
+                <!-- 留言会动态加载到这里 -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- 底部联系栏 -->
+    <footer class="bottom-contact-bar">
+        <h3 class="contact-title">联系我们</h3>
+        <div class="contact-details">
+            <div class="detail-item">
+                <i class="fas fa-user detail-icon"></i>
+                <div class="detail-text">联系人：张生</div>
+            </div>
+            <div class="detail-item">
+                <i class="fas fa-phone-alt detail-icon"></i>
+                <div class="detail-text">
+                    <a href="tel:13886871234" style="color: white; text-decoration: none;">
+                        138-8687-1234
+                    </a>
+                </div>
+            </div>
+            <div class="detail-item">
+                <i class="fas fa-map-marker-alt detail-icon"></i>
+                <div class="detail-text">月光海露营地A区服务点</div>
+            </div>
+        </div>
+        <div class="hours">营业时间：08:00 - 22:00（全年无休）</div>
+        <div class="copyright">© 2025 月光海露营小店 - 为您提供最贴心的露营生活服务</div>
+    </footer>
+    
+    <!-- 微信弹窗 -->
+    <div id="wechat-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center;">
+        <div style="background: white; padding: 25px; border-radius: 16px; text-align: center; max-width: 280px;">
+            <h3 style="margin-bottom: 15px; color: #333; font-size: 1.1rem;">添加微信</h3>
+            <div style="background: #f8f9fa; padding: 15px; margin-bottom: 15px; border-radius: 8px;">
+                <div style="font-size: 2.5rem; margin-bottom: 10px; color: #09BB07;">ⓦ</div>
+                <p style="font-size: 1.1rem; font-weight: bold; margin-bottom: 8px;">微信号：zhang_camping</p>
+                <p style="font-size: 0.85rem; color: #666;">长按保存二维码，使用微信扫一扫添加</p>
+            </div>
+            <button id="close-modal" style="background: #4a7c59; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 0.95rem;">关闭</button>
+        </div>
+    </div>
+    
+    <script>
+        // 页面切换功能
+        const homeButton = document.getElementById('home-button');
+        const navItems = document.querySelectorAll('.nav-item');
+        const pages = document.querySelectorAll('.page');
+        
+        // 初始化页面
+        function initPages() {
+            // 隐藏所有页面
+            pages.forEach(page => {
+                page.classList.remove('active');
+            });
+            // 显示主页
+            document.getElementById('main-page').classList.add('active');
+        }
+        
+        // 切换页面函数
+        function switchPage(pageId) {
+            // 隐藏所有页面
+            pages.forEach(page => {
+                page.classList.remove('active');
+            });
+            // 显示目标页面
+            document.getElementById(pageId).classList.add('active');
+        }
+        
+        // 导航项点击事件
+        navItems.forEach(item => {
+            item.addEventListener('click', function() {
+                const page = this.getAttribute('data-page');
+                switchPage(`${page}-page`);
+            });
+        });
+        
+        // 主页按钮点击事件
+        homeButton.addEventListener('click', function() {
+            switchPage('main-page');
+        });
+        
+        // 留言功能实现
+        const messageForm = document.getElementById('message-form');
+        const messageList = document.getElementById('message-list');
+        
+        // 从本地存储加载留言
+        function loadMessages() {
+            const messages = JSON.parse(localStorage.getItem('camping-messages')) || [];
+            messageList.innerHTML = '';
+            
+            if (messages.length === 0) {
+                messageList.innerHTML = '<div style="text-align: center; padding: 15px; color: #888; font-size: 0.9rem;">暂无留言</div>';
+                return;
+            }
+            
+            // 按时间倒序排列
+            messages.sort((a, b) => b.timestamp - a.timestamp);
+            
+            messages.forEach(msg => {
+                const messageEl = document.createElement('div');
+                messageEl.className = 'message-card';
+                
+                const formattedDate = new Date(msg.timestamp).toLocaleString();
+                
+                messageEl.innerHTML = `
+                    <div class="message-header">
+                        <div class="message-author">${msg.name}</div>
+                        <div class="message-date">${formattedDate}</div>
+                    </div>
+                    <div class="message-content">${msg.content}</div>
+                `;
+                
+                messageList.appendChild(messageEl);
+            });
+        }
+        
+        // 提交新留言
+        messageForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('message-name').value;
+            const content = document.getElementById('message-content').value;
+            
+            if (!name.trim() || !content.trim()) {
+                alert('请填写完整信息');
+                return;
+            }
+            
+            const messages = JSON.parse(localStorage.getItem('camping-messages')) || [];
+            
+            const newMessage = {
+                name: name,
+                content: content,
+                timestamp: new Date().getTime()
+            };
+            
+            messages.push(newMessage);
+            localStorage.setItem('camping-messages', JSON.stringify(messages));
+            
+            // 清空表单
+            messageForm.reset();
+            
+            // 重新加载消息列表
+            loadMessages();
+            
+            alert('留言发布成功！');
+        });
+        
+        // 购物车功能
+        document.querySelectorAll('.add-to-cart').forEach(button => {
+            button.addEventListener('click', function() {
+                const productCard = this.closest('.product-card');
+                const productName = productCard.querySelector('.product-title').textContent;
+                
+                // 显示添加成功反馈
+                const originalText = this.textContent;
+                this.textContent = '✓ 已加';
+                this.style.backgroundColor = '#4a7c59';
+                
+                setTimeout(() => {
+                    this.textContent = originalText;
+                    this.style.backgroundColor = '';
+                }, 1500);
+                
+                alert(`已添加 ${productName} 到购物车！`);
+            });
+        });
+        
+        // 微信弹窗控制
+        const wechatBtn = document.getElementById('wechat-btn');
+        const wechatModal = document.getElementById('wechat-modal');
+        const closeModal = document.getElementById('close-modal');
+        
+        wechatBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            wechatModal.style.display = 'flex';
+        });
+        
+        closeModal.addEventListener('click', function() {
+            wechatModal.style.display = 'none';
+        });
+        
+        // 点击蒙版关闭弹窗
+        wechatModal.addEventListener('click', function(e) {
+            if (e.target === wechatModal) {
+                wechatModal.style.display = 'none';
+            }
+        });
+        
+        // 初始化页面
+        initPages();
+        
+        // 初始化加载留言
+        loadMessages();
+    </script>
+</body>
+</html>
