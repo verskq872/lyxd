@@ -645,8 +645,7 @@ footer{background:linear-gradient(135deg,#2f5d46,#1f4333);color:#fff;text-align:
   function renderPrizeRows() {
     $('#prize-rows').innerHTML = PRIZES.map(p =>
       `<div class="prize-row"><span class="prize-badge ${p.badge}">${p.name}</span>
-        <span class="prize-name">${p.emoji} ${esc(p.prize)}</span>
-        <span class="prize-odds">${(p.prob * 100).toFixed(0)}%</span></div>`).join('');
+        <span class="prize-name">${p.emoji} ${esc(p.prize)}</span></div>`).join('');
   }
 
   function spin() {
